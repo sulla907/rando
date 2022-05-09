@@ -46,5 +46,5 @@ def speed_db(speed):
         record_data(time_stamp, speed)
     
 if __name__ == '__main__':
-    speed = speed_db()
-    get_speed(speed)
+    speed = get_speed()
+    speed_db(speed)
