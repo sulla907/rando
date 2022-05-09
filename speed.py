@@ -1,14 +1,50 @@
-from re import sub
+
+import sqlite3
 import subprocess
 import re
+import os 
+from datetime import datetime
 
 def get_speed():
     print('>> Checking download speed....')
     output = subprocess.run(['speedtest'], capture_output=True).stdout.decode()
     re_exp = 'Download:\s(.*)'
     internet_speed = re.findall(re_exp, output)
-    print(internet_speed[0])
+    return(internet_speed[0])
+   
+
+def record_data(timestamp, speed):
+    db = sqlite3.connect('internet_speed.db')
+    print('>> Connected to DB')
+    c = db.cursor()
+    data = [timestamp, speed]
+    statment = 'INSERT INTO download_speed VALUES (?,?}'
+    c.execute(statment, data)
+    db.commit()
+    c.close()
+    print('>> Commited successfully\n>> Closing database connection...')
     
+    
+
+def speed_db(speed):
+    time = datetime.now()
+    time_stamp = time.strftime("%d-%h-%Y_%H%M")
+    if os.path.isfile('./internet_speed.db'):
+        
+        record_data(time_stamp, speed)
+        return
+        
+    else:    
+        db = sqlite3.connect('internet_speed.db')
+        print('>> DB created')
+        c = db.cursor()
+        make_table = '''CREATE TABLE download_speed (timestamp text, speed text)'''
+        c.execute(make_table)
+        print(">> Speed database table created")
+        db.commit
+        c.close()
+        record_data(time_stamp, speed)
     
 if __name__ == '__main__':
-    get_speed()
+    speed = speed_db()
+    get_speed(speed)
