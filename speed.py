@@ -18,7 +18,7 @@ def record_data(timestamp, speed):
     print('>> Connected to DB')
     c = db.cursor()
     data = [timestamp, speed]
-    statment = 'INSERT INTO download_speed VALUES (?,?}'
+    statment = 'INSERT INTO download_speed VALUES (?,?)'
     c.execute(statment, data)
     db.commit()
     c.close()
