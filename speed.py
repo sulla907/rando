@@ -51,7 +51,7 @@ def show_data():
     db = sqlite3.connect('internet_speed.db')
     query = " SELECT * FROM download_speed"
     sql_data = pandas.read_sql_query(query, db)
-    print(sql_data.head())
+    print(sql_data)
     
 if __name__ == '__main__':
     speed = get_speed()
